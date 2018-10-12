@@ -33,11 +33,10 @@ def import_txt():
 if __name__ == '__main__':
     id3 = import_txt()
 
-    ganho_p = id3.ganho(id3.entropia_perpectiva(["Ensolarado", "Nublado", "Chuvoso"]))
-    ganho_t = id3.ganho(id3.entropia_temperatura(["Quente", "Moderada", "Fresca"]))
-    ganho_u = id3.ganho(id3.entropia_umidade(["Alta", "Normal"]))
-    ganho_v = id3.ganho(id3.entropia_vento(["Forte", "Fraco"]))
+    ganho_perspectiva = id3.ganho(id3.entropia_perpectiva(["Ensolarado", "Nublado", "Chuvoso"])), "Perspectiva"
+    ganho_temperatura = id3.ganho(id3.entropia_temperatura(["Quente", "Moderada", "Fresca"])), "Temperatura"
+    ganho_umidade = id3.ganho(id3.entropia_umidade(["Alta", "Normal"])), "Umidade"
+    ganho_vento = id3.ganho(id3.entropia_vento(["Forte", "Fraco"])), "Vento"
 
-    print(ganho_p, ganho_t, ganho_u, ganho_v)
-
-    max(ganho_p, ganho_t, ganho_v, ganho_u)
+    raiz = id3.raiz_arvore([ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
+    print(raiz)

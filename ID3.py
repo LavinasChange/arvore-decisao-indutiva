@@ -61,3 +61,6 @@ class ID3:
 
     def entropia_vento(self, nomes):
         return self.entropia_by_str_name(nomes, 'vento')
+
+    def raiz_arvore(self, lista_ganhos):
+        return max(lista_ganhos)
