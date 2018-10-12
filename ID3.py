@@ -25,7 +25,7 @@ class ID3:
     def ganho(self, lista_entropia):
         soma = 0
         for entropia_item in lista_entropia:
-            soma += entropia_item[0] * entropia_item[1] / self.tamanho
+            soma += entropia_item[0] * entropia_item[1] / self.num_objetos
         return self.entropia_geral[0] - soma
 
     @staticmethod
@@ -33,13 +33,12 @@ class ID3:
         return sum(x.jogarTenis == 'Sim' for x in lista)
 
     @property
-    def tamanho(self):
+    def num_objetos(self):
         return len(self.dias)
 
     @property
     def entropia_geral(self):
-        soma = self.soma_jogar_tenis(self.dias)
-        return self.entropia(soma, self.tamanho)
+        return self.entropia(self.soma_jogar_tenis(self.dias), self.num_objetos)
 
     def entropia_by_str_name(self, nomes, obj_str):
         saida = []
@@ -62,4 +61,3 @@ class ID3:
 
     def entropia_vento(self, nomes):
         return self.entropia_by_str_name(nomes, 'vento')
-
