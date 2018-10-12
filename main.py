@@ -32,22 +32,22 @@ def import_txt():
 
 if __name__ == '__main__':
     id3 = import_txt()
+
     entropia_geral = id3.entropia_geral
-    print(id3.entropia_perpectiva)
+    perspectiva_ensolarado_entropia, perspectiva_nublado_entropia, perspeciva_chuvoso_entropia = id3.entropia_perpectiva(
+        ["Ensolarado", "Nublado", "Chuvoso"])
+    temperatura_quente_entropia, temperatura_moderada_entropia, temperatura_fresca_entropia = id3.entropia_temperatura(
+        ["Quente", "Moderada", "Fresca"])
+    umidade_alta_entropia, umidade_normal_entropia = id3.entropia_umidade(["Alta", "Normal"])
+    vento_forte_entropia, vento_fraco_entropia = id3.entropia_vento(["Forte", "Fraco"])
 
-    entropia_t_quente = entropia(2, 4)
-    entropia_t_moderada = entropia(4, 6)
-    entropia_t_fresca = entropia(3, 4)
-
-    entropia_u_alta = entropia(3, 7)
-    entropia_u_normal = entropia(6, 7)
-
-    entropia_v_forte = entropia(3, 6)
-    entropia_v_fraco = entropia(6, 8)
-
-    ganho_p = ganho(entropia_geral, 14, [(entropia_p_ensolarado, 5), (entropia_p_nublado, 4), (entropia_p_chuvoso, 5)])
-    ganho_t = ganho(entropia_geral, 14, [(entropia_p_ensolarado, 5), (entropia_p_nublado, 4), (entropia_p_chuvoso, 5)])
-    ganho_u = ganho(entropia_geral, 14, [(entropia_p_ensolarado, 5), (entropia_p_nublado, 4), (entropia_p_chuvoso, 5)])
-    ganho_v = ganho(entropia_geral, 14, [(entropia_p_ensolarado, 5), (entropia_p_nublado, 4), (entropia_p_chuvoso, 5)])
+    ganho_p = ganho(entropia_geral, 14, [(perspectiva_ensolarado_entropia, 5), (perspectiva_nublado_entropia, 4),
+                                         (perspeciva_chuvoso_entropia, 5)])
+    ganho_t = ganho(entropia_geral, 14, [(perspectiva_ensolarado_entropia, 5), (perspectiva_nublado_entropia, 4),
+                                         (perspeciva_chuvoso_entropia, 5)])
+    ganho_u = ganho(entropia_geral, 14, [(perspectiva_ensolarado_entropia, 5), (perspectiva_nublado_entropia, 4),
+                                         (perspeciva_chuvoso_entropia, 5)])
+    ganho_v = ganho(entropia_geral, 14, [(perspectiva_ensolarado_entropia, 5), (perspectiva_nublado_entropia, 4),
+                                         (perspeciva_chuvoso_entropia, 5)])
 
     max(ganho_p, ganho_t, ganho_v, ganho_u)
