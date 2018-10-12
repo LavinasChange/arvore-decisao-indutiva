@@ -1,8 +1,9 @@
 class Dia:
 
-    def __init__(self, perpectiva, temperatura, umidade, vento, jogarTenis):
-        self.perspectiva = perpectiva
-        self.temperatura = temperatura
-        self.umidade = umidade
-        self.vento = vento
-        self.jogarTenis = jogarTenis
+    def __init__(self, vetor):
+        self.dia = vetor[0]
+        self.perspectiva = vetor[1]
+        self.temperatura = vetor[2]
+        self.umidade = vetor[3]
+        self.vento = vetor[4]
+        self.jogarTenis = vetor[5]
