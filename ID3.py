@@ -13,22 +13,20 @@ class ID3:
     def entropia(positivo, total):
         diferenca = total - positivo
         if diferenca == 0 or diferenca == total:
-            return 0
+            return 0, total
 
         a = positivo / total
         b = diferenca / total
-        return - a * log2(a) - b * log2(b)
+        return - a * log2(a) - b * log2(b), total
 
     def entropia_simp(self, lista):
-        print(self.soma_jogar_tenis(lista), len(lista))
         return self.entropia(self.soma_jogar_tenis(lista), len(lista))
 
-    @staticmethod
-    def ganho(geral, total_itens, lista_entropia):
+    def ganho(self, lista_entropia):
         soma = 0
         for entropia_item in lista_entropia:
-            soma += entropia_item[0] * entropia_item[1] / total_itens
-        return geral - soma
+            soma += entropia_item[0] * entropia_item[1] / self.tamanho
+        return self.entropia_geral[0] - soma
 
     @staticmethod
     def soma_jogar_tenis(lista):
@@ -64,3 +62,4 @@ class ID3:
 
     def entropia_vento(self, nomes):
         return self.entropia_by_str_name(nomes, 'vento')
+
