@@ -21,3 +21,7 @@ if __name__ == '__main__':
 
     raiz = id3.raiz_arvore([ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
     print(raiz)
+
+    arestas_raiz = id3.arestas(raiz[1])
+
+    print(arestas_raiz)

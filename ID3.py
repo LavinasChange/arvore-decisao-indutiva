@@ -65,3 +65,13 @@ class ID3:
     @staticmethod
     def raiz_arvore(lista_ganhos):
         return max(lista_ganhos)
+
+    def arestas(self, raiz_nome):
+        lista = []
+        for x in self.dias:
+            lista.append(getattr(x, raiz_nome.lower()))
+        return self.unique(lista)
+
+    @staticmethod
+    def unique(lista):
+        return list(set(lista))
