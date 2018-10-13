@@ -8,6 +8,7 @@ class ID3:
 
     def __init__(self):
         self.dias: List[Dia] = []
+        self.backup: List[Dia] = self.dias
 
     @staticmethod
     def entropia(positivo, total):
@@ -67,11 +68,18 @@ class ID3:
         return max(lista_ganhos)
 
     def arestas(self, raiz_nome):
-        lista = []
-        for x in self.dias:
-            lista.append(getattr(x, raiz_nome.lower()))
-        return self.unique(lista)
+        return self.unique([getattr(x, raiz_nome.lower()) for x in self.dias])
 
     @staticmethod
     def unique(lista):
+        lista.sort()
         return list(set(lista))
+
+    def filtrar_dias_por_atributo(self, aresta):
+        self.dias = self.backup
+        if aresta != '':
+            self.dias = [x for x in self.backup if x.perspectiva == aresta]
+
+    @property
+    def restaurar_dias(self):
+        self.dias = self.backup
