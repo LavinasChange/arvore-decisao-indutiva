@@ -72,8 +72,9 @@ class ID3:
 
     @staticmethod
     def unique(lista):
+        lista = list(set(lista))
         lista.sort()
-        return list(set(lista))
+        return lista
 
     def filtrar_dias_por_atributo(self, aresta):
         self.dias = self.backup

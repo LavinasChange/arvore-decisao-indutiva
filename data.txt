@@ -11,4 +11,4 @@ D10, Chuvoso,  Moderada, Normal, Fraco, Sim
 D11, Ensolarado,  Moderada, Normal, Forte, Sim
 D12, Nublado,  Moderada, Alta, Forte, Sim
 D13, Nublado,  Quente, Normal, Fraco, Sim
-D14, Chuvoso,  Moderada, Alta, Frote, Não
+D14, Chuvoso,  Moderada, Alta, Forte, Não
