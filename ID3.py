@@ -91,14 +91,18 @@ class ID3:
         return lista
 
     def filtrar_dias_por_atributo(self, aresta):
-        self.dias = self.backup
-        if aresta != '':
+        if aresta == '':
+            self.dias = self.backup
+            return
 
-            self.dias = []
-            for x in self.backup:
-                for y in x.parametros:
-                    if y == aresta:
-                        self.dias.append(x)
+        self.dias = []
+        for x in self.backup:
+            for y in x.parametros:
+                if y == aresta:
+                    self.dias.append(x)
+
+        for x in self.dias:
+            print(x.parametros)
 
     @property
     def restaurar_dias(self):

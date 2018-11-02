@@ -19,8 +19,6 @@ def eh_folha(lista):
 
 
 def treinamento(filtro=''):
-    colunas = id3.buscar_arestas_das_colunas(1)
-
     id3.filtrar_dias_por_atributo(filtro)
     entropia_perspectiva = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(1), 1)
     entropia_temperatura = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(2), 2)
@@ -28,36 +26,46 @@ def treinamento(filtro=''):
     entropia_vento = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(4), 4)
 
     folha = eh_folha([entropia_perspectiva, entropia_temperatura, entropia_umidade, entropia_vento])
-    # print('folha', folha)
 
-    raiz_valor, raiz = 0, 0
+    coluna = 0
     if not folha:
         ganho_perspectiva = id3.ganho(entropia_perspectiva), "1"
         ganho_temperatura = id3.ganho(entropia_temperatura), "2"
         ganho_umidade = id3.ganho(entropia_umidade), "3"
         ganho_vento = id3.ganho(entropia_vento), "4"
-        raiz_valor, raiz = id3.raiz_arvore([ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
+        raiz_valor, coluna = id3.raiz_arvore([ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
 
-    return raiz_valor, raiz
+    return coluna
+
+
+def col_to_str(coluna):
+    coluna = int(coluna)
+    if coluna == 1:
+        return "Perspeciva"
+    if coluna == 2:
+        return "Temperatura"
+    if coluna == 3:
+        return "Humidade"
+    if coluna == 4:
+        return "Vento"
 
 
 if __name__ == '__main__':
     id3 = gerar_objetos()
 
-    no_valor, no = treinamento()
-    arestas = id3.arestas(no)
-    print("Coluna =>", no, "|Arestas =>", arestas)
+    no_raiz = treinamento()
+    arestas = id3.arestas(no_raiz)
+    print('Nó', no_raiz)
 
-    print("Escolhido aresta", arestas[1])
+    aux = []
+    while arestas:
+        coluna = treinamento(arestas.pop())
+        novas = id3.arestas(coluna)
+        for x in novas:
+            aux.insert(0, x)
 
-    no_valor, no = treinamento(arestas[1])
-    arestas = id3.arestas(no)
-    print("Coluna =>", no, "| Arestas =>", arestas)
+        if not arestas:
+            arestas = aux
+            aux = []
 
-    # print("Escolhido aresta", arestas[1])
-    no_valor, no = treinamento(arestas[1])
-
-    arestas = id3.arestas(no)
-    print(no_valor, no)
-    for aresta in arestas:
-        treinamento(aresta)
+        print('Coluna', col_to_str(coluna))
