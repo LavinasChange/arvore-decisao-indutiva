@@ -31,7 +31,7 @@ class ID3:
 
     @staticmethod
     def soma_jogar_tenis(lista):
-        return sum(x.jogarTenis == 'Sim' for x in lista)
+        return sum(x.parametros[-1] == 'Sim' for x in lista)
 
     @property
     def num_objetos(self):
@@ -51,6 +51,20 @@ class ID3:
             saida.append(self.entropia_simp(lista))
         return saida
 
+    def entropia_by_coluna(self, nomes, coluna):
+        saida = []
+        for item in nomes:
+            lista = []
+            for x in self.dias:
+
+                if x.parametros[coluna] == item:
+                    lista.append(x)
+            saida.append(self.entropia_simp(lista))
+        return saida
+
+    def entropia_por_coluna(self, nomes, coluna):
+        return self.entropia_by_coluna(nomes, coluna)
+
     def entropia_perpectiva(self, nomes):
         return self.entropia_by_str_name(nomes, 'perspectiva')
 
@@ -67,8 +81,8 @@ class ID3:
     def raiz_arvore(lista_ganhos):
         return max(lista_ganhos)
 
-    def arestas(self, raiz_nome):
-        return self.unique([getattr(x, raiz_nome.lower()) for x in self.dias])
+    def arestas(self, coluna):
+        return self.unique([x.parametros[int(coluna)] for x in self.dias])
 
     @staticmethod
     def unique(lista):
@@ -79,8 +93,19 @@ class ID3:
     def filtrar_dias_por_atributo(self, aresta):
         self.dias = self.backup
         if aresta != '':
-            self.dias = [x for x in self.backup if x.perspectiva == aresta]
+
+            self.dias = []
+            for x in self.backup:
+                for y in x.parametros:
+                    if y == aresta:
+                        self.dias.append(x)
 
     @property
     def restaurar_dias(self):
         self.dias = self.backup
+
+    def buscar_arestas_das_colunas(self, posicao):
+        lista = []
+        for x in self.dias:
+            lista.append(x.parametros[posicao])
+        return self.unique(lista)
