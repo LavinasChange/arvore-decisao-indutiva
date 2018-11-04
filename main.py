@@ -27,45 +27,45 @@ def treinamento(filtro=''):
 
     folha = eh_folha([entropia_perspectiva, entropia_temperatura, entropia_umidade, entropia_vento])
 
-    coluna = 0
+    valor_coluna_treinada =  coluna_treinada = 0
     if not folha:
         ganho_perspectiva = id3.ganho(entropia_perspectiva), "1"
         ganho_temperatura = id3.ganho(entropia_temperatura), "2"
         ganho_umidade = id3.ganho(entropia_umidade), "3"
         ganho_vento = id3.ganho(entropia_vento), "4"
-        raiz_valor, coluna = id3.raiz_arvore([ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
+        valor_coluna_treinada, coluna_treinada = id3.raiz_arvore([ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
 
-    return coluna
+    return coluna_treinada
 
 
-def col_to_str(coluna):
-    coluna = int(coluna)
-    if coluna == 1:
+def col_to_str(num_coluna):
+    num_coluna = int(num_coluna)
+    if num_coluna == 1:
         return "Perspeciva"
-    if coluna == 2:
+    if num_coluna == 2:
         return "Temperatura"
-    if coluna == 3:
+    if num_coluna == 3:
         return "Humidade"
-    if coluna == 4:
+    if num_coluna == 4:
         return "Vento"
 
 
 if __name__ == '__main__':
     id3 = gerar_objetos()
 
-    no_raiz = treinamento()
-    arestas = id3.arestas(no_raiz)
-    print('Nó', no_raiz)
+    coluna = treinamento()
+    arestas = id3.arestas(coluna)
 
     aux = []
     while arestas:
         coluna = treinamento(arestas.pop())
-        novas = id3.arestas(coluna)
-        for x in novas:
-            aux.insert(0, x)
+        novas_arestas = id3.arestas(coluna)
+
+        print(col_to_str(coluna))
+        print(novas_arestas)
+        for x in novas_arestas:
+            aux.append(x)
 
         if not arestas:
             arestas = aux
             aux = []
-
-        print('Coluna', col_to_str(coluna))

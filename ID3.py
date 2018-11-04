@@ -101,9 +101,6 @@ class ID3:
                 if y == aresta:
                     self.dias.append(x)
 
-        for x in self.dias:
-            print(x.parametros)
-
     @property
     def restaurar_dias(self):
         self.dias = self.backup
