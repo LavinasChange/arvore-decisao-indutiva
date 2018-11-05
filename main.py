@@ -4,9 +4,13 @@ from Elemento_ID3 import ElementoID3
 
 
 def gerar_objetos():
+    global cabecalho
+
     texto = open("data.txt").read()
     linhas = texto.replace(' ', '').splitlines()
     objetos = ID3()
+    cabecalho = linhas.pop(0).split(',')
+
     for linha in linhas:
         objetos.dias.append(Dia(linha.split(',')))
     return objetos
@@ -34,15 +38,8 @@ def treinamento(filtros=['']):
 
 
 def col_to_str(num_coluna):
-    num_coluna = int(num_coluna)
-    if num_coluna == 0:
-        return "Perspeciva"
-    if num_coluna == 1:
-        return "Temperatura"
-    if num_coluna == 2:
-        return "Humidade"
-    if num_coluna == 3:
-        return "Vento"
+    global cabecalho
+    return cabecalho[int(num_coluna)]
 
 
 if __name__ == '__main__':

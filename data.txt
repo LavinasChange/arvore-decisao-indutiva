@@ -1,3 +1,4 @@
+Perspeciva, Temperatura, Humidade,Vento, JogarTenis
 Ensolarado,  Quente, Alta, Fraco, Não
 Ensolarado,  Quente, Alta, Forte, Não
 Nublado,  Quente, Alta, Fraco, Sim
