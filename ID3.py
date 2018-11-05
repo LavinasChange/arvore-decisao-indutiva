@@ -84,3 +84,7 @@ class ID3:
         for x in self.dias:
             lista.append(x.parametros[posicao])
         return self.unique(lista)
+
+    @property
+    def num_colunas(self):
+        return len(self.backup[0].parametros)

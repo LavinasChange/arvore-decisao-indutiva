@@ -19,35 +19,29 @@ def eh_folha(lista):
     return False
 
 
-def treinamento(filtros=None):
-    if filtros is None:
-        filtros = ['']
-
+def treinamento(filtros=['']):
     id3.filtrar_dias_por_atributo(filtros)
-    entropia_perspectiva = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(1), 1)
-    entropia_temperatura = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(2), 2)
-    entropia_umidade = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(3), 3)
-    entropia_vento = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(4), 4)
+    ganhos = []
 
-    ganho_perspectiva = id3.ganho(entropia_perspectiva), "1"
-    ganho_temperatura = id3.ganho(entropia_temperatura), "2"
-    ganho_umidade = id3.ganho(entropia_umidade), "3"
-    ganho_vento = id3.ganho(entropia_vento), "4"
-    valor_coluna_treinada, coluna_treinada = id3.raiz_arvore(
-        [ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
+    for x in range(id3.num_colunas - 1):
+        entropia = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(x), x)
+        ganho = id3.ganho(entropia), str(x)
+        ganhos.append(ganho)
+
+    valor_coluna_treinada, coluna_treinada = id3.raiz_arvore(ganhos)
 
     return coluna_treinada
 
 
 def col_to_str(num_coluna):
     num_coluna = int(num_coluna)
-    if num_coluna == 1:
+    if num_coluna == 0:
         return "Perspeciva"
-    if num_coluna == 2:
+    if num_coluna == 1:
         return "Temperatura"
-    if num_coluna == 3:
+    if num_coluna == 2:
         return "Humidade"
-    if num_coluna == 4:
+    if num_coluna == 3:
         return "Vento"
 
 
