@@ -21,7 +21,7 @@ class ID3:
         return - a * log2(a) - b * log2(b), total
 
     def entropia_simp(self, lista):
-        return self.entropia(self.soma_jogar_tenis(lista), len(lista))
+        return self.entropia(self.soma_ultimo_parametro(lista), len(lista))
 
     def ganho(self, lista_entropia):
         soma = 0
@@ -30,7 +30,7 @@ class ID3:
         return self.entropia_geral[0] - soma
 
     @staticmethod
-    def soma_jogar_tenis(lista):
+    def soma_ultimo_parametro(lista):
         return sum(x.parametros[-1] == 'Sim' for x in lista)
 
     @property
@@ -39,17 +39,7 @@ class ID3:
 
     @property
     def entropia_geral(self):
-        return self.entropia(self.soma_jogar_tenis(self.dias), self.num_objetos)
-
-    def entropia_by_str_name(self, nomes, obj_str):
-        saida = []
-        for item in nomes:
-            lista = []
-            for x in self.dias:
-                if getattr(x, obj_str) == item:
-                    lista.append(x)
-            saida.append(self.entropia_simp(lista))
-        return saida
+        return self.entropia(self.soma_ultimo_parametro(self.dias), self.num_objetos)
 
     def entropia_by_coluna(self, nomes, coluna):
         saida = []
@@ -65,18 +55,6 @@ class ID3:
     def entropia_por_coluna(self, nomes, coluna):
         return self.entropia_by_coluna(nomes, coluna)
 
-    def entropia_perpectiva(self, nomes):
-        return self.entropia_by_str_name(nomes, 'perspectiva')
-
-    def entropia_temperatura(self, nomes):
-        return self.entropia_by_str_name(nomes, 'temperatura')
-
-    def entropia_umidade(self, nomes):
-        return self.entropia_by_str_name(nomes, 'umidade')
-
-    def entropia_vento(self, nomes):
-        return self.entropia_by_str_name(nomes, 'vento')
-
     @staticmethod
     def raiz_arvore(lista_ganhos):
         return max(lista_ganhos)
@@ -90,20 +68,16 @@ class ID3:
         lista.sort()
         return lista
 
-    def filtrar_dias_por_atributo(self, aresta):
-        if aresta == '':
+    def filtrar_dias_por_atributo(self, arestas):
+        if arestas == ['']:
             self.dias = self.backup
             return
 
         self.dias = []
         for x in self.backup:
             for y in x.parametros:
-                if y == aresta:
+                if all(elem in y for elem in arestas):
                     self.dias.append(x)
-
-    @property
-    def restaurar_dias(self):
-        self.dias = self.backup
 
     def buscar_arestas_das_colunas(self, posicao):
         lista = []
