@@ -6,24 +6,19 @@ from Elemento_ID3 import ElementoID3
 def gerar_objetos():
     global cabecalho
 
-    texto = open("data.txt").read()
-    linhas = texto.replace(' ', '').splitlines()
+    linhas = open("data.txt").read().replace(' ', '').splitlines()
     objetos = ID3()
-    cabecalho = linhas.pop(0).split(',')
 
+    cabecalho = linhas.pop(0).split(',')
     for linha in linhas:
         objetos.dias.append(Dia(linha.split(',')))
+
     return objetos
 
 
-def eh_folha(lista):
-    for x in lista:
-        if max(x) == (0, 0):
-            return True
-    return False
-
-
-def treinamento(filtros=['']):
+def treinamento(filtros=None):
+    if filtros is None:
+        filtros = ['']
     id3.filtrar_dias_por_atributo(filtros)
     ganhos = []
 
@@ -53,9 +48,8 @@ if __name__ == '__main__':
     for x in arestas:
         lista_id3.insert(0, ElementoID3(x, historico, col_to_str(coluna), nivel_arvore))
 
-    # Solucionar para cada aresta manter seu historico de arestas
     aux = []
-
+    nivel_arvore += 1
     while lista_id3:
         elemento = lista_id3.pop()
         coluna = treinamento(elemento.historico_aresas)
