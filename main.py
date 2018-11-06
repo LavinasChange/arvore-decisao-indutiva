@@ -72,7 +72,6 @@ if __name__ == '__main__':
             aux = []
             nivel_arvore += 1
 
+    print("Folhas")
     for x in folhas:
         print(x.nome_coluna, x.historico_aresas)
-        folha = id3.buscar_folha(treinamento(x.historico_aresas))
-        print(folha)
