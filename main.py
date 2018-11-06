@@ -25,7 +25,6 @@ def treinamento(filtros=None):
     ultima = 1
     for coluna in range(id3.num_colunas - ultima):
         entropia = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(coluna), coluna)
-        print(entropia)
         ganho = id3.ganho(entropia), str(coluna)
         ganhos.append(ganho)
 
@@ -43,37 +42,37 @@ if __name__ == '__main__':
     id3 = gerar_objetos()
     nivel_arvore = 0
 
-    historico = ['']
+    historico = []
     coluna = treinamento(historico)
-    arestas = id3.arestas(coluna)
+    arestas, eh_folha = id3.arestas(coluna)
     lista_id3 = []
     for x in arestas:
-        lista_id3.insert(0, ElementoID3(x, historico, col_to_str(coluna), nivel_arvore))
+        lista_id3.insert(0, ElementoID3(x, historico, col_to_str(coluna), nivel_arvore, eh_folha))
 
-    ultimo_nivel = []
+    folhas = []
     aux = []
     nivel_arvore += 1
     while lista_id3:
-        elemento = lista_id3.pop()
-        coluna = treinamento(elemento.historico_aresas)
-        arestas = id3.arestas(coluna)
+        elemento: ElementoID3 = lista_id3.pop()
+        arestas = []
+
+        if not elemento.eh_folha:
+            coluna = treinamento(elemento.historico_aresas)
+            arestas, eh_folha = id3.arestas(coluna)
+        else:
+            folhas.append(elemento)
 
         for x in arestas:
-            aux.insert(0, ElementoID3(x, elemento.historico_aresas, col_to_str(coluna), nivel_arvore))
+            aux.insert(0, ElementoID3(x, elemento.historico_aresas, col_to_str(coluna), nivel_arvore, eh_folha))
 
-        #print('Nível', elemento.nivel_arvore, elemento.nome_coluna, elemento.historico_aresas)
+        print('Nível', elemento.nivel_arvore, elemento.nome_coluna, elemento.historico_aresas)
 
         if not lista_id3:
             lista_id3 = aux.copy()
-            if aux:
-                ultimo_nivel = aux.copy()
             aux = []
             nivel_arvore += 1
 
-    print()
-
-    f = ['Ensolarado', 'Alta']
-    x = treinamento(f)
-
-    for x in ultimo_nivel:
-        print(x.nome_coluna,x.historico_aresas)
+    for x in folhas:
+        print(x.nome_coluna, x.historico_aresas)
+        folha = id3.buscar_folha(treinamento(x.historico_aresas))
+        print(folha)

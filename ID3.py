@@ -60,7 +60,12 @@ class ID3:
         return max(lista_ganhos)
 
     def arestas(self, coluna):
-        return self.unique([x.parametros[int(coluna)] for x in self.dias])
+        ultima_coluna = [x.parametros[int(-1)] for x in self.dias]
+        for x in ultima_coluna:
+            if x != ultima_coluna[0]:
+                return self.unique([x.parametros[int(coluna)] for x in self.dias]), False
+
+        return [ultima_coluna[0]], True
 
     @staticmethod
     def unique(lista):
@@ -75,9 +80,8 @@ class ID3:
 
         self.dias = []
         for x in self.backup:
-            for y in x.parametros:
-                if all(elem in y for elem in arestas):
-                    self.dias.append(x)
+            if all(elem in x.parametros for elem in arestas):
+                self.dias.append(x)
 
     def buscar_arestas_das_colunas(self, posicao):
         lista = []
@@ -88,3 +92,7 @@ class ID3:
     @property
     def num_colunas(self):
         return len(self.backup[0].parametros)
+
+    def buscar_folha(self, coluna):
+        ultima_coluna = [x.parametros[int(-1)] for x in self.dias]
+        return ultima_coluna[0]
