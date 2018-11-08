@@ -1,61 +1,77 @@
 from Dia import Dia
 from ID3 import ID3
+from Elemento_ID3 import ElementoID3
 
 
 def gerar_objetos():
-    texto = open("data.txt").read()
-    linhas = texto.replace(' ', '').splitlines()
+    global cabecalho
+
+    linhas = open("data.txt").read().replace(' ', '').splitlines()
     objetos = ID3()
+
+    cabecalho = linhas.pop(0).split(',')
     for linha in linhas:
         objetos.dias.append(Dia(linha.split(',')))
+
     return objetos
 
 
-def eh_folha(lista):
-    for x in lista:
-        if max(x) == (0, 0):
-            return True
-    return False
+def treinamento(filtros=None):
+    if filtros is None:
+        filtros = ['']
+    id3.filtrar_dias_por_atributo(filtros)
+    ganhos = []
+
+    ultima = 1
+    for coluna in range(id3.num_colunas - ultima):
+        entropia = id3.entropia_por_coluna(id3.buscar_arestas_das_colunas(coluna), coluna)
+        ganho = id3.ganho(entropia), str(coluna)
+        ganhos.append(ganho)
+
+    valor_coluna_treinada, coluna_treinada = id3.raiz_arvore(ganhos)
+
+    return coluna_treinada
 
 
-def treinamento(filtro=''):
-    id3.filtrar_dias_por_atributo(filtro)
-    entropia_perspectiva = id3.entropia_perpectiva(["Ensolarado", "Nublado", "Chuvoso"])
-    entropia_temperatura = id3.entropia_temperatura(["Quente", "Moderada", "Fresca"])
-    entropia_umidade = id3.entropia_umidade(["Alta", "Normal"])
-    entropia_vento = id3.entropia_vento(["Forte", "Fraco"])
-
-    folha = eh_folha([entropia_perspectiva, entropia_temperatura, entropia_umidade, entropia_vento])
-    print('folha', folha)
-
-    raiz_valor, raiz = 0, 0
-    if not folha:
-        ganho_perspectiva = id3.ganho(entropia_perspectiva), "Perspectiva"
-        ganho_temperatura = id3.ganho(entropia_temperatura), "Temperatura"
-        ganho_umidade = id3.ganho(entropia_umidade), "Umidade"
-        ganho_vento = id3.ganho(entropia_vento), "Vento"
-        raiz_valor, raiz = id3.raiz_arvore([ganho_perspectiva, ganho_temperatura, ganho_vento, ganho_umidade])
-
-    return raiz_valor, raiz
+def col_to_str(num_coluna):
+    global cabecalho
+    return cabecalho[int(num_coluna)]
 
 
 if __name__ == '__main__':
     id3 = gerar_objetos()
+    nivel_arvore = 0
 
-    no_valor, no = treinamento()
-    arestas = id3.arestas(no)
-    print("Nó =>", no, "|Arestas =>", arestas)
+    historico = []
+    coluna = treinamento(historico)
+    arestas, eh_folha = id3.arestas(coluna)
+    lista_id3 = []
+    for x in arestas:
+        lista_id3.insert(0, ElementoID3(x, historico, col_to_str(coluna), nivel_arvore, eh_folha))
 
-    print("Escolhido aresta", arestas[1])
+    folhas = []
+    aux = []
+    nivel_arvore += 1
+    while lista_id3:
+        elemento: ElementoID3 = lista_id3.pop()
+        arestas = []
 
-    no_valor, no = treinamento(arestas[1])
-    arestas = id3.arestas(no)
-    print("Nó =>", no, "| Arestas =>", arestas)
+        if not elemento.eh_folha:
+            coluna = treinamento(elemento.historico_aresas)
+            arestas, eh_folha = id3.arestas(coluna)
+        else:
+            folhas.append(elemento)
 
-    # print("Escolhido aresta", arestas[1])
-    no_valor, no = treinamento(arestas[1])
+        for x in arestas:
+            aux.insert(0, ElementoID3(x, elemento.historico_aresas, col_to_str(coluna), nivel_arvore, eh_folha))
 
-    arestas = id3.arestas(no)
-    print(no_valor, no)
-#    for aresta in arestas:
-#    treinamento(aresta)
+        print('Nível', elemento.nivel_arvore, elemento.nome_coluna, elemento.historico_aresas)
+
+        if not lista_id3:
+            lista_id3 = aux.copy()
+            aux = []
+            nivel_arvore += 1
+
+    print("Folhas")
+    for x in folhas:
+        print(x.nome_coluna, x.historico_aresas)
