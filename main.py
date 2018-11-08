@@ -6,7 +6,7 @@ from Elemento_ID3 import ElementoID3
 def gerar_objetos():
     global cabecalho
 
-    linhas = open("data.txt").read().replace(' ', '').splitlines()
+    linhas = open("data-formulario.csv").read().replace(' ', '').splitlines()
     objetos = ID3()
 
     cabecalho = linhas.pop(0).split(',')

@@ -31,7 +31,7 @@ class ID3:
 
     @staticmethod
     def soma_ultimo_parametro(lista):
-        return sum(x.parametros[-1] == 'Sim' for x in lista)
+        return sum(x.parametros[-1] == 'FernandoHaddad' for x in lista)
 
     @property
     def num_objetos(self):
